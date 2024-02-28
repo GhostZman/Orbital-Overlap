@@ -14,6 +14,19 @@
 		68E2485C2B8FC10A00DF4D72 /* Orbital_OverlapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2485B2B8FC10A00DF4D72 /* Orbital_OverlapTests.swift */; };
 		68E248662B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248652B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift */; };
 		68E248682B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248672B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift */; };
+		68E248752B8FC14F00DF4D72 /* Orbital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248742B8FC14F00DF4D72 /* Orbital.swift */; };
+		68E248762B8FC14F00DF4D72 /* Orbital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248742B8FC14F00DF4D72 /* Orbital.swift */; };
+		68E248772B8FC14F00DF4D72 /* Orbital.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248742B8FC14F00DF4D72 /* Orbital.swift */; };
+		68E248782B8FC15400DF4D72 /* Orbital_OverlapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248492B8FC10900DF4D72 /* Orbital_OverlapApp.swift */; };
+		68E248792B8FC15400DF4D72 /* Orbital_OverlapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248492B8FC10900DF4D72 /* Orbital_OverlapApp.swift */; };
+		68E2487A2B8FC15700DF4D72 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2484B2B8FC10900DF4D72 /* ContentView.swift */; };
+		68E2487B2B8FC15800DF4D72 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2484B2B8FC10900DF4D72 /* ContentView.swift */; };
+		68E2487C2B8FC15C00DF4D72 /* Orbital_OverlapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2485B2B8FC10A00DF4D72 /* Orbital_OverlapTests.swift */; };
+		68E2487D2B8FC15E00DF4D72 /* Orbital_OverlapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E2485B2B8FC10A00DF4D72 /* Orbital_OverlapTests.swift */; };
+		68E2487E2B8FC16000DF4D72 /* Orbital_OverlapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248652B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift */; };
+		68E2487F2B8FC16100DF4D72 /* Orbital_OverlapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248652B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift */; };
+		68E248802B8FC16300DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248672B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift */; };
+		68E248812B8FC16400DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E248672B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +58,7 @@
 		68E248612B8FC10A00DF4D72 /* Orbital OverlapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Orbital OverlapUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E248652B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orbital_OverlapUITests.swift; sourceTree = "<group>"; };
 		68E248672B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orbital_OverlapUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		68E248742B8FC14F00DF4D72 /* Orbital.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Orbital.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +111,7 @@
 			children = (
 				68E248492B8FC10900DF4D72 /* Orbital_OverlapApp.swift */,
 				68E2484B2B8FC10900DF4D72 /* ContentView.swift */,
+				68E248742B8FC14F00DF4D72 /* Orbital.swift */,
 				68E2484D2B8FC10A00DF4D72 /* Assets.xcassets */,
 				68E2484F2B8FC10A00DF4D72 /* Orbital_Overlap.entitlements */,
 				68E248502B8FC10A00DF4D72 /* Preview Content */,
@@ -260,7 +275,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68E2484C2B8FC10900DF4D72 /* ContentView.swift in Sources */,
+				68E2487F2B8FC16100DF4D72 /* Orbital_OverlapUITests.swift in Sources */,
+				68E248812B8FC16400DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */,
+				68E2487C2B8FC15C00DF4D72 /* Orbital_OverlapTests.swift in Sources */,
 				68E2484A2B8FC10900DF4D72 /* Orbital_OverlapApp.swift in Sources */,
+				68E248752B8FC14F00DF4D72 /* Orbital.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,6 +288,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68E2485C2B8FC10A00DF4D72 /* Orbital_OverlapTests.swift in Sources */,
+				68E2487E2B8FC16000DF4D72 /* Orbital_OverlapUITests.swift in Sources */,
+				68E248802B8FC16300DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */,
+				68E248762B8FC14F00DF4D72 /* Orbital.swift in Sources */,
+				68E2487A2B8FC15700DF4D72 /* ContentView.swift in Sources */,
+				68E248782B8FC15400DF4D72 /* Orbital_OverlapApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -277,7 +301,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				68E248682B8FC10A00DF4D72 /* Orbital_OverlapUITestsLaunchTests.swift in Sources */,
+				68E2487D2B8FC15E00DF4D72 /* Orbital_OverlapTests.swift in Sources */,
+				68E2487B2B8FC15800DF4D72 /* ContentView.swift in Sources */,
+				68E248792B8FC15400DF4D72 /* Orbital_OverlapApp.swift in Sources */,
 				68E248662B8FC10A00DF4D72 /* Orbital_OverlapUITests.swift in Sources */,
+				68E248772B8FC14F00DF4D72 /* Orbital.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

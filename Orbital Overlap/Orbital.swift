@@ -24,8 +24,8 @@ import Observation
         return [r, theta, phi]
     }
     
-    func waveFunction1s(coordinates: [Double], atomicNumber: Int, bohrRadius: Double, separation: Double) -> Double {
-        return (1.0/sqrt(Double.pi))*pow((Double(atomicNumber)/bohrRadius), (3/2))*exp((-Double(atomicNumber)*coordinates[0])/(2*bohrRadius))
+    func waveFunction1s(rCoordinate: Double, atomicNumber: Int, bohrRadius: Double) -> Double {
+        return (1.0/sqrt(Double.pi))*pow((Double(atomicNumber)/bohrRadius), (3/2))*exp((-Double(atomicNumber)*rCoordinate)/(bohrRadius))
     }
     
     func monteCarloMVT(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, spacing: Double, bohrRadius: Double, atomicNumber: Int) async -> Double {
@@ -36,8 +36,11 @@ import Observation
                     var guess: [Double] = []
                     for dimension in 0 ... upperBounds.count {
                         guess.append(Double.random(in: lowerBounds[dimension] ... upperBounds[dimension]))
+                        
                     }
-                    return self.waveFunction1s(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: 0)*self.waveFunction1s(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: spacing)
+                    let sphericalGuess = self.cartesianToSpherical(xCoordinate: guess[0], yCoordinate: guess[1], zCoordinate: guess[2])
+                    
+                    return self.waveFunction1s(rCoordinate: sphericalGuess[0], atomicNumber: atomicNumber, bohrRadius: bohrRadius)*self.waveFunction1s(rCoordinate: sphericalGuess[0], atomicNumber: atomicNumber, bohrRadius: bohrRadius)
                 }
             }
             var combinedTaskResults: [Double] = []

@@ -27,8 +27,19 @@ final class Orbital_OverlapTests: XCTestCase {
         
         XCTAssertEqual(sphericalCoords[0], 2.449489742, accuracy: 1.0E-7, "Was not equal to this resolution.")
         XCTAssertEqual(sphericalCoords[1], 0.615479708, accuracy: 1.0E-7, "Was not equal to this resolution.")
-        XCTAssertEqual(sphericalCoords[2], 0.785398163, accuracy: 1.0E-2, "Was not equal to this resolution.")
+        XCTAssertEqual(sphericalCoords[2], 0.785398163, accuracy: 1.0E-7, "Was not equal to this resolution.")
     }
+    //testing in angstrom units
+    func testWaveFunction1s() throws {
+        let myOrbital = Orbital()
+        let r: Double = 1.0
+        let z: Int = 1
+        let a: Double = 5.291772E-1
+        
+        let waveFunction = myOrbital.waveFunction1s(rCoordinate: r, atomicNumber: z, bohrRadius: a)
+        XCTAssertEqual(waveFunction, 0.221476, accuracy: 1.0E-5, "Was not equal to this resolution.")
+    }
+    
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

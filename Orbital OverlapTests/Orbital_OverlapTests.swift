@@ -49,6 +49,19 @@ final class Orbital_OverlapTests: XCTestCase {
         XCTAssertEqual(distance, 2.449489742, accuracy: 1.0E-5, "Was not equal to this resolution.")
     }
     
+    func testOrbitalOverlapIntegral() async throws {
+        let myOrbital = Orbital()
+        let boundsUpper: [Double] = [10.0,10.0,10.0]
+        let boundsLower: [Double] = [-10.0,-10.0,-10.0]
+        let distanceBetweenAtoms: Double = 0.0
+        let atomicNumber: Int = 1
+        let numGuess: Int = 1000000
+        
+        let orbitalOverlap = await myOrbital.findOverlap(spacing: distanceBetweenAtoms, atomicNumber: atomicNumber, upperBounds: boundsUpper, lowerBounds: boundsLower, numGuesses: numGuess)
+        
+        XCTAssertEqual(orbitalOverlap, 1, accuracy: 1.0E-1, "Was not equal to this resolution.")
+    }
+    
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         measure {

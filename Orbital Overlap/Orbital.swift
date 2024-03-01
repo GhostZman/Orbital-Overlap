@@ -13,7 +13,15 @@ import Observation
     let bohrRadius = 0.529177210903 //Angstrom
     
     
-    func findOverlap(spacing: Double, atomicNumber: Int, upperBounds: [Double], lowerBounds: [Double]) {
+    func findOverlap(spacing: Double, atomicNumber: Int, upperBounds: [Double], lowerBounds: [Double], numGuesses: Int) async -> Double {
+        var boundsCoefficient: Double = 1.0
+        for dim in 0...upperBounds.count-1 {
+            boundsCoefficient *= (upperBounds[dim]-lowerBounds[dim])
+        }
+        
+        let meanValue = await monteCarloMeanValue(upperBounds: upperBounds, lowerBounds: lowerBounds, numGuess: numGuesses, atomicNumber: atomicNumber, separation: spacing)
+        
+        return meanValue*boundsCoefficient
         
     }
     
@@ -70,20 +78,18 @@ import Observation
         return waveFunction1*waveFunction2
     }
     
-    func monteCarloMVT(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, functionToIntegrate: (Double, Int) -> Double, atomicNumber: Int) async -> Double {
+    func monteCarloMeanValue(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, atomicNumber: Int, separation: Double) async -> Double {
         let meanValue = await withTaskGroup(of: Double.self, returning: Double.self, body: { taskGroup in
             
             for _ in 1 ... numGuess {
                 taskGroup.addTask {
                     var guess: [Double] = []
-                    for dimension in 0 ... upperBounds.count {
+                    for dimension in 0 ... upperBounds.count - 1 {
                         guess.append(Double.random(in: lowerBounds[dimension] ... upperBounds[dimension]))
                         
                     }
-                    let sphericalGuess = self.cartesianToSpherical(xCoordinate: guess[0], yCoordinate: guess[1], zCoordinate: guess[2])
                     
-                    
-                    return self.waveFunction1s(rCoordinate: sphericalGuess[0], atomicNumber: atomicNumber)
+                    return self.overlapping1sWaveFunctions(separation: separation, atomicNumber1: atomicNumber, atomicNumber2: atomicNumber, testCoordinates: guess)
                 }
             }
             var combinedTaskResults: [Double] = []

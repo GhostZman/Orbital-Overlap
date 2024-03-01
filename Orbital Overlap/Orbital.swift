@@ -15,39 +15,40 @@ import Observation
         
     }
     
-    func waveFunction(coordinates: [Double], atomicNumber: Int, bohrRadius: Double, separation: Double) {
-        let x: Double = coordinates[0] - separation
-        let y: Double = coordinates[1]
-        let z: Double = coordinates[2]
+    func cartesianToSpherical(xCoordinate: Double, yCoordinate: Double, zCoordinate: Double) -> [Double] {
         
-        let r = sqrt(pow(x, 2)+pow(y, 2)+pow(z, 2))
-        let theta = atan(sqrt(pow(x, 2)+pow(y, 2))/z)
-        let phi = atan(y/x)
+        let r: Double = sqrt(pow(xCoordinate, 2)+pow(yCoordinate, 2)+pow(zCoordinate, 2))
+        let theta: Double = acos(zCoordinate/r)
+        let phi: Double = atan2(yCoordinate,xCoordinate)
         
-        return (1.0/sqrt(Double.pi))*pow((atomicNumber/bohrRadius), (3/2))*exp((-atomicNumber*r)/(2*bohrRadius))
+        return [r, theta, phi]
     }
     
-    func monteCarloMVT(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, spacing: Double, bohrRadius: Double, atomicNumber: Int) {
+    func waveFunction1s(coordinates: [Double], atomicNumber: Int, bohrRadius: Double, separation: Double) -> Double {
+        return (1.0/sqrt(Double.pi))*pow((Double(atomicNumber)/bohrRadius), (3/2))*exp((-Double(atomicNumber)*coordinates[0])/(2*bohrRadius))
+    }
+    
+    func monteCarloMVT(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, spacing: Double, bohrRadius: Double, atomicNumber: Int) async -> Double {
         let meanValue = await withTaskGroup(of: Double.self, returning: Double.self, body: { taskGroup in
             
             for _ in 1 ... numGuess {
                 taskGroup.addTask {
-                    let guess = []
+                    var guess: [Double] = []
                     for dimension in 0 ... upperBounds.count {
                         guess.append(Double.random(in: lowerBounds[dimension] ... upperBounds[dimension]))
                     }
-                    return waveFunction(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: 0)*waveFunction(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: spacing)
+                    return self.waveFunction1s(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: 0)*self.waveFunction1s(coordinates: guess, atomicNumber: atomicNumber, bohrRadius: bohrRadius, separation: spacing)
                 }
             }
-            var combinedTaskResults: [Bool] = []
+            var combinedTaskResults: [Double] = []
             for await result in taskGroup{
                 combinedTaskResults.append(result)
             }
-            let sum = 0
+            var sum: Double = 0
             for element in combinedTaskResults {
                 sum += element
             }
-            return sum/numGuess
+            return sum/Double(numGuess)
         })
         return meanValue
     }

@@ -17,12 +17,17 @@ final class Orbital_OverlapTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testCoordinateConversions() throws {
+        let myOrbital = Orbital()
+        let x: Double = 1.0
+        let y: Double = 1.0
+        let z: Double = 2.0
+        
+        let sphericalCoords: [Double] = myOrbital.cartesianToSpherical(xCoordinate: x, yCoordinate: y, zCoordinate: z)
+        
+        XCTAssertEqual(sphericalCoords[0], 2.449489742, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        XCTAssertEqual(sphericalCoords[1], 0.615479708, accuracy: 1.0E-7, "Was not equal to this resolution.")
+        XCTAssertEqual(sphericalCoords[2], 0.785398163, accuracy: 1.0E-2, "Was not equal to this resolution.")
     }
 
     func testPerformanceExample() throws {

@@ -34,13 +34,21 @@ final class Orbital_OverlapTests: XCTestCase {
         let myOrbital = Orbital()
         let r: Double = 1.0
         let z: Int = 1
-        let a: Double = 5.291772E-1
         
-        let waveFunction = myOrbital.waveFunction1s(rCoordinate: r, atomicNumber: z, bohrRadius: a)
+        let waveFunction = myOrbital.waveFunction1s(rCoordinate: r, atomicNumber: z)
         XCTAssertEqual(waveFunction, 0.221476, accuracy: 1.0E-5, "Was not equal to this resolution.")
     }
     
-
+    func testDistanceFormula() throws {
+        let myOrbital = Orbital()
+        let point1: [Double] = [1,1,1]
+        let point2: [Double] = [2,3,2]
+        
+        let distance: Double = myOrbital.distanceFormula(coordinates1: point1, coordinates2: point2)
+        
+        XCTAssertEqual(distance, 2.449489742, accuracy: 1.0E-5, "Was not equal to this resolution.")
+    }
+    
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
         measure {

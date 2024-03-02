@@ -47,6 +47,16 @@ import Observation
         return (1.0/sqrt(Double.pi))*pow((Double(atomicNumber)/self.bohrRadius), (3/2))*exp((-Double(atomicNumber)*rCoordinate)/(self.bohrRadius))
     }
     
+    func waveFunction2px(SphericalCoordinates: [Double], atomicNumber: Int) -> Double {
+        let rCoordinate = SphericalCoordinates[0]
+        let thetaCoordinate = SphericalCoordinates[1]
+        let phiCoordinate = SphericalCoordinates[2]
+        
+        return (1.0/sqrt(32.0*Double.pi))*pow(Double(atomicNumber)/bohrRadius,(5/2))*rCoordinate*exp((-1.0*Double(atomicNumber)*rCoordinate)/(2*bohrRadius))*sin(thetaCoordinate)*cos(phiCoordinate)
+    }
+    
+    
+    
     func distanceFormula(coordinates1: [Double], coordinates2: [Double]) -> Double {
         
         var sum: Double = 0.0

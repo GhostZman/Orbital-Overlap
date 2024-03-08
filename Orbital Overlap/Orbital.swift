@@ -13,13 +13,21 @@ import Observation
     let bohrRadius = 0.529177210903 //Angstrom
     
     
-    func findOverlap(spacing: Double, atomicNumber: Int, upperBounds: [Double], lowerBounds: [Double], numGuesses: Int) async -> Double {
+    func findOverlap(spacing: Double, atomicNumber: Int, upperBounds: [Double], lowerBounds: [Double], numGuesses: Int, orbitalSet: Int) async -> Double {
         var boundsCoefficient: Double = 1.0
         for dim in 0...upperBounds.count-1 {
             boundsCoefficient *= (upperBounds[dim]-lowerBounds[dim])
         }
+        var meanValue: Double = 0.0
+        switch orbitalSet {
+        case 0:
+            meanValue = await monteCarloMeanValue1s1s(upperBounds: upperBounds, lowerBounds: lowerBounds, numGuess: numGuesses, atomicNumber: atomicNumber, separation: spacing)
+        case 1:
+            meanValue = await monteCarloMeanValue1s2px(upperBounds: upperBounds, lowerBounds: lowerBounds, numGuess: numGuesses, atomicNumber: atomicNumber, separation: spacing)
+        default:
+            meanValue = await monteCarloMeanValue1s1s(upperBounds: upperBounds, lowerBounds: lowerBounds, numGuess: numGuesses, atomicNumber: atomicNumber, separation: spacing)
+        }
         
-        let meanValue = await monteCarloMeanValue(upperBounds: upperBounds, lowerBounds: lowerBounds, numGuess: numGuesses, atomicNumber: atomicNumber, separation: spacing)
         
         return meanValue*boundsCoefficient
         
@@ -55,6 +63,22 @@ import Observation
         return (1.0/sqrt(32.0*Double.pi))*pow(Double(atomicNumber)/bohrRadius,(5/2))*rCoordinate*exp((-1.0*Double(atomicNumber)*rCoordinate)/(2*bohrRadius))*sin(thetaCoordinate)*cos(phiCoordinate)
     }
     
+    func overlapping1s2pxWaveFunctions(separation: Double, atomicNumber1: Int, atomicNumber2: Int, testCoordinatesCartesian:[Double]) -> Double {
+        
+        let atom1CoordinatesCartesian: [Double] = [separation/2.0, 0, 0]
+        let atom2CoordinatesCartesian: [Double] = [(-1)*separation/2.0, 0, 0]
+        
+        let testCoordRelativeToAtom1 = [testCoordinatesCartesian[0]-atom1CoordinatesCartesian[0], testCoordinatesCartesian[1]-atom1CoordinatesCartesian[1], testCoordinatesCartesian[2]-atom1CoordinatesCartesian[2]]
+        let testCoordRelativeToAtom2 = [testCoordinatesCartesian[0]-atom2CoordinatesCartesian[0], testCoordinatesCartesian[1]-atom2CoordinatesCartesian[1], testCoordinatesCartesian[2]-atom2CoordinatesCartesian[2]]
+        
+        let sphericalRelativeTo1 = cartesianToSpherical(xCoordinate: testCoordRelativeToAtom1[0], yCoordinate: testCoordRelativeToAtom1[1], zCoordinate: testCoordRelativeToAtom1[2])
+        let sphericalRelativeTo2 = cartesianToSpherical(xCoordinate: testCoordRelativeToAtom2[0], yCoordinate: testCoordRelativeToAtom2[1], zCoordinate: testCoordRelativeToAtom2[2])
+        
+        let waveFunction1 = waveFunction1s(rCoordinate: sphericalRelativeTo1[0], atomicNumber: atomicNumber1)
+        let waveFunction2 = waveFunction2px(SphericalCoordinates: sphericalRelativeTo2, atomicNumber: atomicNumber2)
+        
+        return waveFunction1*waveFunction2
+    }
     
     
     func distanceFormula(coordinates1: [Double], coordinates2: [Double]) -> Double {
@@ -88,7 +112,7 @@ import Observation
         return waveFunction1*waveFunction2
     }
     
-    func monteCarloMeanValue(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, atomicNumber: Int, separation: Double) async -> Double {
+    func monteCarloMeanValue1s1s(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, atomicNumber: Int, separation: Double) async -> Double {
         let meanValue = await withTaskGroup(of: Double.self, returning: Double.self, body: { taskGroup in
             
             for _ in 1 ... numGuess {
@@ -100,6 +124,33 @@ import Observation
                     }
                     
                     return self.overlapping1sWaveFunctions(separation: separation, atomicNumber1: atomicNumber, atomicNumber2: atomicNumber, testCoordinates: guess)
+                }
+            }
+            var combinedTaskResults: [Double] = []
+            for await result in taskGroup{
+                combinedTaskResults.append(result)
+            }
+            var sum: Double = 0
+            for element in combinedTaskResults {
+                sum += element
+            }
+            return sum/Double(numGuess)
+        })
+        return meanValue
+    }
+    
+    func monteCarloMeanValue1s2px(upperBounds: [Double], lowerBounds: [Double], numGuess: Int, atomicNumber: Int, separation: Double) async -> Double {
+        let meanValue = await withTaskGroup(of: Double.self, returning: Double.self, body: { taskGroup in
+            
+            for _ in 1 ... numGuess {
+                taskGroup.addTask {
+                    var guess: [Double] = []
+                    for dimension in 0 ... upperBounds.count - 1 {
+                        guess.append(Double.random(in: lowerBounds[dimension] ... upperBounds[dimension]))
+                        
+                    }
+                    
+                    return self.overlapping1s2pxWaveFunctions(separation: separation, atomicNumber1: atomicNumber, atomicNumber2: atomicNumber, testCoordinatesCartesian: guess)
                 }
             }
             var combinedTaskResults: [Double] = []

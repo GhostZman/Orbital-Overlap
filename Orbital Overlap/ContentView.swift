@@ -19,11 +19,20 @@ struct ContentView: View {
     @State private var numberOfGuesses = "100000"
     @State private var result = ""
     @State private var isLoading = false
+    @State private var selectedOrbital = 0
     
     @Bindable var orbitalOverlapCalculator = Orbital()
     
+    let options = ["1s - 1s", "1s - 2px"]
+    
     var body: some View {
         VStack {
+            Picker("Select an option", selection: $selectedOrbital) {
+                            ForEach(0..<options.count) {
+                                Text(options[$0])
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
             HStack{
                 VStack {
                     Text("Lower Bounds:")
@@ -89,7 +98,7 @@ struct ContentView: View {
         let lowerBounds: [Double] = [Double(xValueLow) ?? 0, Double(yValueLow) ?? 0, Double(zValueLow) ?? 0]
         
         Task {
-            result = await orbitalOverlapCalculator.findOverlap(spacing: Double(spacing) ?? 0, atomicNumber: Int(atomicNumber) ?? 1, upperBounds: upperBounds, lowerBounds: lowerBounds, numGuesses: Int(numberOfGuesses) ?? 10).formatted(.number.precision(.fractionLength(5)).notation(.scientific))
+            result = await orbitalOverlapCalculator.findOverlap(spacing: Double(spacing) ?? 0, atomicNumber: Int(atomicNumber) ?? 1, upperBounds: upperBounds, lowerBounds: lowerBounds, numGuesses: Int(numberOfGuesses) ?? 10, orbitalSet: selectedOrbital).formatted(.number.precision(.fractionLength(5)).notation(.scientific))
             isLoading = false
         }
         
